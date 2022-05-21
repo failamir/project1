@@ -2,6 +2,7 @@
 
 Route::redirect('/', '/login');
 Route::redirect('/dashboard', '/admin/dashboard');
+Route::get('print/{id}', 'PrintController@index')->name('print');
 
 Auth::routes(['register' => false]);
 
