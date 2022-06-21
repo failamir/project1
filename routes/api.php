@@ -1,32 +1,19 @@
 <?php
 
 Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:sanctum']], function () {
-    // Abilities
-    Route::apiResource('abilities', 'AbilitiesController', ['only' => ['index']]);
-
-    // Locales
-    Route::get('locales/languages', 'LocalesController@languages')->name('locales.languages');
-    Route::get('locales/messages', 'LocalesController@messages')->name('locales.messages');
-
-    // Permissions
-    Route::resource('permissions', 'PermissionsApiController');
-
-    // Roles
-    Route::resource('roles', 'RolesApiController');
-
     // Users
-    Route::post('users/media', 'UsersApiController@storeMedia')->name('users.storeMedia');
-    Route::resource('users', 'UsersApiController');
+    Route::apiResource('users', 'UsersApiController');
 
-    // Pangkat
-    Route::resource('pangkats', 'PangkatApiController');
+    // Jobs
+    Route::post('jobs/media', 'JobsApiController@storeMedia')->name('jobs.storeMedia');
+    Route::apiResource('jobs', 'JobsApiController');
 
-    // Jabatan
-    Route::resource('jabatans', 'JabatanApiController');
+    // Registration Flow
+    Route::apiResource('registration-flows', 'RegistrationFlowApiController');
 
-    // Mata Pelajaran
-    Route::resource('mata-pelajarans', 'MataPelajaranApiController');
+    // Applied Jobs
+    Route::apiResource('applied-jobs', 'AppliedJobsApiController');
 
-    // Tugas
-    Route::resource('tugas', 'TugasApiController');
+    // Job Alerts
+    Route::apiResource('job-alerts', 'JobAlertsApiController');
 });

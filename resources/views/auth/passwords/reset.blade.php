@@ -1,75 +1,48 @@
 @extends('layouts.app')
 @section('content')
-<div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-                    <form class="form" method="POST" action="{{ route('password.request') }}">
-                        @csrf
-                        <input type="hidden" name="token" value="{{ $token }}">
-                        <div class="card card-login">
-                            <div class="card-header card-header-primary text-center">
-                                <h4 class="card-title">{{ trans('global.reset_password') }}</h4>
-                            </div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mx-4">
+            <div class="card-body p-4">
+                <h1>{{ trans('panel.site_title') }}</h1>
 
-                            @if(session('status'))
-                                <div class="card-body" style="padding: .9375rem 20px;">
-                                    <p class="alert alert-info">
-                                        {{ session('status') }}
-                                    </p>
-                                </div>
-                            @endif
-                            <div class="card-body">
-                                <div class="bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="material-icons">email</i>
-                                            </span>
-                                        </div>
-                                        <input name="email" type="email" class="form-control" placeholder="{{ trans('global.login_email') }}..." value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-                                    </div>
-                                    @error('email')
-                                        <div class="error">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="material-icons">lock_outline</i>
-                                            </span>
-                                        </div>
-                                        <input name="password" type="password" class="form-control" placeholder="{{ trans('global.login_password') }}..." autocomplete="new-password" required>
-                                    </div>
-                                    @error('password')
-                                        <div class="error" for="email">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="material-icons">lock_outline</i>
-                                            </span>
-                                        </div>
-                                        <input name="password_confirmation" type="password" class="form-control" placeholder="{{ trans('global.login_password_confirmation') }}..." autocomplete="new-password" required>
-                                    </div>
-                                </div>
+                <p class="text-muted">{{ trans('global.reset_password') }}</p>
+
+                <form method="POST" action="{{ route('password.request') }}">
+                    @csrf
+
+                    <input name="token" value="{{ $token }}" type="hidden">
+
+                    <div class="form-group">
+                        <input id="email" type="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ $email ?? old('email') }}">
+
+                        @if($errors->has('email'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('email') }}
                             </div>
-                            <div class="card-footer justify-content-center flex-column">
-                                <button type="submit" class="btn btn-link btn-primary btn-lg">
-                                    {{ trans('global.reset_password') }}
-                                </button>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <input id="password" type="password" name="password" class="form-control" required placeholder="{{ trans('global.login_password') }}">
+
+                        @if($errors->has('password'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('password') }}
                             </div>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <input id="password-confirm" type="password" name="password_confirmation" class="form-control" required placeholder="{{ trans('global.login_password_confirmation') }}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">
+                                {{ trans('global.reset_password') }}
+                            </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

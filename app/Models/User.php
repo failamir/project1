@@ -2,44 +2,30 @@
 
 namespace App\Models;
 
-use \DateTimeInterface;
-use App\Support\HasAdvancedFilter;
+use App\Notifications\VerifyUserNotification;
 use Carbon\Carbon;
 use Hash;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Str;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable
 {
-    use HasAdvancedFilter;
     use SoftDeletes;
     use Notifiable;
-    use InteractsWithMedia;
-    use HasFactory;
 
     public $table = 'users';
 
-    protected $appends = [
-        'tanda_tangan',
+    public static $searchable = [
+        'phone_number',
     ];
 
     protected $hidden = [
         'remember_token',
         'password',
-    ];
-
-    protected $orderable = [
-        'id',
-        'name',
-        'email',
-        'email_verified_at',
-        'nip',
     ];
 
     protected $dates = [
@@ -49,86 +35,69 @@ class User extends Authenticatable implements HasMedia
         'deleted_at',
     ];
 
-    protected $filterable = [
-        'id',
-        'name',
-        'email',
-        'email_verified_at',
-        'roles.title',
-        'nip',
-    ];
-
     protected $fillable = [
         'name',
         'email',
         'email_verified_at',
+        'approved',
         'password',
         'remember_token',
-        'nip',
+        'phone_number',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
-    public function getIsAdminAttribute()
+    public function __construct(array $attributes = [])
     {
-        return $this->roles()->where('title', 'Admin')->exists();
+        parent::__construct($attributes);
+        self::created(function (User $user) {
+            $registrationRole = config('panel.registration_default_role');
+            if (!$user->roles()->get()->contains($registrationRole)) {
+                $user->roles()->attach($registrationRole);
+            }
+        });
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function getIsAdminAttribute()
     {
-        $thumbnailWidth  = 50;
-        $thumbnailHeight = 50;
+        return $this->roles()->where('id', 1)->exists();
+    }
 
-        $thumbnailPreviewWidth  = 120;
-        $thumbnailPreviewHeight = 120;
+    public function candidateResumes()
+    {
+        return $this->hasMany(Resume::class, 'candidate_id', 'id');
+    }
 
-        $this->addMediaConversion('thumbnail')
-            ->width($thumbnailWidth)
-            ->height($thumbnailHeight)
-            ->fit('crop', $thumbnailWidth, $thumbnailHeight);
-        $this->addMediaConversion('preview_thumbnail')
-            ->width($thumbnailPreviewWidth)
-            ->height($thumbnailPreviewHeight)
-            ->fit('crop', $thumbnailPreviewWidth, $thumbnailPreviewHeight);
+    public function candidateMeetings()
+    {
+        return $this->hasMany(Meeting::class, 'candidate_id', 'id');
     }
 
     public function getEmailVerifiedAtAttribute($value)
     {
-        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.datetime_format')) : null;
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
     }
 
     public function setEmailVerifiedAtAttribute($value)
     {
-        $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('project.datetime_format'), $value)->format('Y-m-d H:i:s') : null;
+        $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 
     public function setPasswordAttribute($input)
     {
         if ($input) {
-            $this->attributes['password'] = Hash::needsRehash($input) ? Hash::make($input) : $input;
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
         }
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
     }
 
     public function roles()
     {
         return $this->belongsToMany(Role::class);
-    }
-
-    public function getTandaTanganAttribute()
-    {
-        return $this->getMedia('user_tanda_tangan')->map(function ($item) {
-            $media = $item->toArray();
-            $media['url'] = $item->getUrl();
-            $media['thumbnail'] = $item->getUrl('thumbnail');
-            $media['preview_thumbnail'] = $item->getUrl('preview_thumbnail');
-
-            return $media;
-        });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
     }
 }
