@@ -1,116 +1,132 @@
-.wrapper.wrapper-full-page {
-  height: auto;
-  min-height: 100vh;
+.ck-editor__editable,
+textarea {
+    min-height: 150px;
 }
 
-.off-canvas-sidebar .wrapper-full-page .page-header {
-  padding: 15vh 0 !important;
+.datatable {
+    width: 100% !important;
 }
 
-.page-header,
-.page-header .page-header-image {
-  height: 100%;
-  background-position: 50%;
-  background-size: cover;
+table.dataTable tbody td.select-checkbox::before,
+table.dataTable tbody td.select-checkbox::after,
+table.dataTable tbody th.select-checkbox::before,
+table.dataTable tbody th.select-checkbox::after {
+    top: 50%;
 }
 
-.page-header {
-  align-items: center;
+.dataTables_length,
+.dataTables_filter,
+.dt-buttons {
+    margin-bottom: 0.333em;
+    margin-top: .2rem;
 }
 
-.header-filter .container {
-  z-index: 2;
-  position: relative;
+.dataTables_filter {
+    margin-right: .2rem;
 }
 
-.login-page .card-login,
-.register-page .card-signup {
-  transform: translateZ(0);
+.dt-buttons .btn {
+    margin-left: 0.333em;
+    border-radius: 0;
 }
 
-.login-page .card-login .card-header,
-.register-page .card-signup .card-header {
-  margin-top: -40px !important;
-  margin-bottom: 20px;
+.table.datatable {
+    box-sizing: border-box;
+    border-collapse: collapse;
 }
 
-.login-page .card-login .card-title,
-.register-page .card-signup .card-title {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-weight: 700;
+table.dataTable thead th {
+    border-bottom: 2px solid #c8ced3;
 }
 
-.login-page .card-login .card-body,
-.register-page .card-signup .card-body {
-  padding: 0 30px 0 10px;
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: 1px solid #c8ced3;
 }
 
-.login-page .card-login .card-body .input-group .input-group-text,
-.register-page .card-signup .card-body .input-group .input-group-text {
-  padding: 15px 15px 0;
+.select2 {
+    max-width: 100%;
+    width: 100% !important;
 }
 
-.login-page .card-login .card-body .input-group .form-control,
-.register-page .card-signup .card-body .input-group .form-control {
-  padding-bottom: 10px;
-  margin: 17px 0 0;
+.select2-selection__rendered {
+    padding-bottom: 5px !important;
 }
 
-.header-filter {
-  background-size: cover;
-  background-position: top center;
-  background-blend-mode: saturation;
+.has-error .invalid-feedback {
+    display: block !important;
 }
 
-.login-page {
-  background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url('/md/img/login.jpg');
+.btn-info,
+.badge-info {
+    color: white;
 }
 
-.register-page {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)), url('/md/img/register.jpg');
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc {
+    background-image: none;
 }
 
-.header-filter::before {
-  background: rgba(0,0,0,.5);
+.sidebar .nav-item {
+    cursor: pointer;
 }
 
-.header-filter::after,
-.header-filter::before {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  display: block;
-  left: 0;
-  top: 0;
-  content: '';
+.btn-default {
+    color: #23282c;
+    background-color: #f0f3f5;
+    border-color: #f0f3f5;
 }
 
-.bmd-form-group .error {
-  font-size: 0.8rem;
-  color: #f44336;
-  font-weight: 400;
+.btn-default.focus,
+.btn-default:focus {
+    box-shadow: 0 0 0 .2rem rgba(209, 213, 215, .5);
 }
 
-.card-login .error,
-.card-signup .error,
-.card-login .form-check {
-  margin-left: 56px;
+.btn-default:hover {
+    color: #23282c;
+    background-color: #d9e1e6;
+    border-color: #d1dbe1;
 }
 
-.card-login .form-check {
-  margin-top: 17px;
-  padding-top: 3px;
+.btn-group-xs > .btn,
+.btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
 }
 
-.alert {
-  font-weight: 400;
+.searchable-title {
+    font-weight: bold;
+}
+.searchable-fields {
+    padding-left:5px;
+}
+.searchable-link {
+    padding:0 5px 0 5px;
+}
+.searchable-link:hover   {
+    cursor: pointer;
+    background: #eaeaea;
+}
+.select2-results__option {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
-.register-page .card-signup {
-  border-radius: 6px;
-  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-  margin-bottom: 100px;
-  margin-top: 15vh;
+.form-group .required::after {
+    content: " *";
+    color: red;
+}
+
+.form-check.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.c-sidebar-brand .c-sidebar-brand-full:hover {
+    color: inherit;
+}
+
+.custom-select.form-control-sm {
+    padding: 0.25rem 1.5rem;
 }

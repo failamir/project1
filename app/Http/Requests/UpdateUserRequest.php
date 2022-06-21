@@ -25,30 +25,16 @@ class UpdateUserRequest extends FormRequest
                 'required',
                 'unique:users,email,' . request()->route('user')->id,
             ],
-            'password' => [
-                'nullable',
+            'roles.*' => [
+                'integer',
             ],
             'roles' => [
                 'required',
                 'array',
             ],
-            'roles.*.id' => [
-                'integer',
-                'exists:roles,id',
-            ],
-            'nip' => [
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
+            'phone_number' => [
+                'string',
                 'nullable',
-            ],
-            'tanda_tangan' => [
-                'array',
-                'nullable',
-            ],
-            'tanda_tangan.*.id' => [
-                'integer',
-                'exists:media,id',
             ],
         ];
     }
